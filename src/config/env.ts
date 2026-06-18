@@ -16,5 +16,6 @@ const socialLinks: SocialLink[] = [
 
 export const config = {
   cloudinaryBaseUrl: import.meta.env.VITE_CLOUDINARY_BASE_URL || 'https://res.cloudinary.com/decbhr3np/image/upload/f_auto,q_auto',
+  personalWebsiteUrl: 'https://thomasliu.click',
   socialLinks
 } as const
