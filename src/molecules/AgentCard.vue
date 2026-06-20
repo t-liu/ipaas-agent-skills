@@ -19,7 +19,9 @@ defineProps<{
           <h3 class="text-lg font-semibold text-brand-slate tracking-tight group-hover:text-brand-accent transition-colors duration-200 dark:text-slate-100">
             {{ skill.displayName }}
           </h3>
-          <p class="text-xs font-medium text-brand-muted mt-0.5 dark:text-slate-400">by {{ skill.author }}</p>
+          <p class="text-xs font-medium text-brand-muted mt-0.5 dark:text-slate-400">
+            by {{ skill.author }}
+          </p>
         </div>
         <SkillBadge :version="skill.version" />
       </div>
@@ -56,7 +58,12 @@ defineProps<{
           stroke="currentColor"
           aria-hidden="true"
         >
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M9 5l7 7-7 7"
+          />
         </svg>
       </router-link>
     </div>

@@ -1,3 +1,34 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+.eggs/
+pip-wheel-metadata/
+*.whl
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# Testing & coverage
+.pytest_cache/
+.coverage
+coverage.xml
+htmlcov/
+.mypy_cache/
+
 # Logs
 logs
 *.log
@@ -22,3 +53,30 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Ignore everything inside the backend directory
+backend/*
+
+# Exceptions: Do NOT ignore these
+!backend/requirements.txt
+!backend/app/
+
+# ==========================================
+# OpenTofu / Terraform Infrastructure
+# ==========================================
+# Local provider caches and binaries
+infra/.terraform/
+
+# Dynamic deployment zip bundles and files artifacts
+infra/files/*.zip
+
+# Local state tracking files (Crucial: Never commit these secrets/topology maps)
+infra/*.tfstate
+infra/*.tfstate.backup
+infra/*.tfstate.*
+
+# Ignored binary execution plans
+infra/*.tfplan
+
+# Local python environments hidden inside infra if used
+infra/.venv/

@@ -22,7 +22,11 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <div ref="sentinel" class="h-px pointer-events-none" aria-hidden="true" />
+  <div
+    ref="sentinel"
+    class="h-px pointer-events-none"
+    aria-hidden="true"
+  />
 
   <footer
     class="fixed bottom-0 left-0 right-0 z-40 bg-brand-slate/90 backdrop-blur-md border-t border-gray-800 transition-all duration-300 ease-out dark:bg-slate-900/90 dark:border-slate-700"
@@ -39,7 +43,10 @@ onBeforeUnmount(() => {
           class="text-gray-400 hover:text-brand-accent transition-colors duration-200"
           :aria-label="link.ariaLabel"
         >
-          <font-awesome-icon :icon="link.icon" class="h-5 w-5" />
+          <font-awesome-icon
+            :icon="link.icon"
+            class="h-5 w-5"
+          />
         </a>
       </div>
       <p class="text-xs text-gray-500">

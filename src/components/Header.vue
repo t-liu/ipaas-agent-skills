@@ -39,7 +39,10 @@ onMounted(() => {
           class="text-brand-muted hover:text-brand-slate transition-colors dark:text-slate-400 dark:hover:text-slate-100"
           @click="toggle"
         >
-          <font-awesome-icon :icon="isDark ? 'sun' : 'moon'" class="text-sm" />
+          <font-awesome-icon
+            :icon="isDark ? 'sun' : 'moon'"
+            class="text-sm"
+          />
         </button>
         <span class="text-xs text-brand-muted font-mono dark:text-slate-400">Beta</span>
       </div>

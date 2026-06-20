@@ -20,7 +20,12 @@ defineProps<{
       </span>
     </div>
 
-    <div v-if="isLoading" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" role="status" aria-label="Loading skills">
+    <div
+      v-if="isLoading"
+      class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+      role="status"
+      aria-label="Loading skills"
+    >
       <div
         v-for="i in 3"
         :key="i"
@@ -43,10 +48,15 @@ defineProps<{
       class="text-center py-16 bg-brand-card rounded-2xl border border-red-200 dark:bg-slate-800 dark:border-red-800"
       role="alert"
     >
-      <p class="text-sm text-red-600 font-medium dark:text-red-400">Failed to load skills: {{ error }}</p>
+      <p class="text-sm text-red-600 font-medium dark:text-red-400">
+        Failed to load skills: {{ error }}
+      </p>
     </div>
 
-    <div v-else-if="skills.length" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <div
+      v-else-if="skills.length"
+      class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+    >
       <AgentCard
         v-for="skill in skills"
         :key="skill.id"
@@ -58,7 +68,9 @@ defineProps<{
       v-else
       class="text-center py-24 bg-brand-card rounded-2xl border border-dashed border-gray-200 dark:bg-slate-800 dark:border-slate-700"
     >
-      <p class="text-sm text-brand-muted font-medium dark:text-slate-400">No marketplace skills match your current search query.</p>
+      <p class="text-sm text-brand-muted font-medium dark:text-slate-400">
+        No marketplace skills match your current search query.
+      </p>
     </div>
   </div>
 </template>

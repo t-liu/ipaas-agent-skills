@@ -24,10 +24,10 @@ async function handleCopy() {
 
 <template>
   <button
-    @click="handleCopy"
     class="flex-1 inline-flex items-center justify-center gap-2 px-3 py-2 text-xs font-mono font-medium rounded-lg bg-brand-surface border border-gray-200 text-brand-slate hover:bg-gray-100 transition-all active:scale-[0.98] dark:bg-slate-700 dark:border-slate-600 dark:text-slate-100 dark:hover:bg-slate-600"
     :title="text"
     :aria-label="copied ? 'Copied to clipboard' : 'Copy installation command'"
+    @click="handleCopy"
   >
     <span class="truncate max-w-[160px]">{{ copied ? 'Copied to clipboard!' : text }}</span>
     <svg
@@ -39,7 +39,12 @@ async function handleCopy() {
       stroke="currentColor"
       aria-hidden="true"
     >
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 2 0 00-2 2v12a2 2 2 0 002 2h10a2 2 2 0 002-2v-1M8 5a2 2 2 0 002 2h2a2 2 2 0 002-2M8 5a2 2 2 0 012-2h2a2 2 2 0 012 2m0 0h2a2 2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" />
+      <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="2"
+        d="M8 5H6a2 2 2 0 00-2 2v12a2 2 2 0 002 2h10a2 2 2 0 002-2v-1M8 5a2 2 2 0 002 2h2a2 2 2 0 002-2M8 5a2 2 2 0 012-2h2a2 2 2 0 012 2m0 0h2a2 2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"
+      />
     </svg>
     <svg
       v-else
@@ -50,7 +55,12 @@ async function handleCopy() {
       stroke="currentColor"
       aria-hidden="true"
     >
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+      <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="2"
+        d="M5 13l4 4L19 7"
+      />
     </svg>
   </button>
 </template>

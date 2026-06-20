@@ -1,9 +1,14 @@
 <script setup lang="ts">
+import { onMounted } from 'vue'
 import { useSkills } from '@/composables/useSkills'
 import SearchHeader from '@/organisms/SearchHeader.vue'
 import SkillGrid from '@/organisms/SkillGrid.vue'
 
-const { searchQuery, filteredSkills, isLoading, error } = useSkills()
+const { searchQuery, filteredSkills, isLoading, error, fetchSkillsFromApi } = useSkills()
+
+onMounted(() => {
+  fetchSkillsFromApi()
+})
 </script>
 
 <template>

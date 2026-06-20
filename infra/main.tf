@@ -1,6 +1,6 @@
 # 1. Persistence Layer: DynamoDB Table
 resource "aws_dynamodb_table" "agent_skills" {
-  name         = "mulesoft-agent-skills-${var.environment}"
+  name         = "ipaas-agent-skills-${var.environment}"
   billing_mode = "PAY_PER_REQUEST" # Zero idle-cost model
   hash_key     = "id"
 
@@ -11,7 +11,7 @@ resource "aws_dynamodb_table" "agent_skills" {
 
   tags = {
     Environment = var.environment
-    Project     = "mulesoft-marketplace"
+    Project     = "ipaas-marketplace"
   }
 }
 
@@ -24,7 +24,7 @@ data "archive_file" "lambda_zip" {
 
 # 3. Compute Layer: IAM Execution Role & Lambda Function
 resource "aws_iam_role" "lambda_exec" {
-  name = "mulesoft-marketplace-lambda-exec-${var.environment}"
+  name = "ipaas-marketplace-lambda-exec-${var.environment}"
 
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
@@ -43,7 +43,7 @@ resource "aws_iam_role_policy_attachment" "lambda_logs" {
 
 # Simple policy alignment to allow Lambda to read/write to your skills table
 resource "aws_iam_policy" "lambda_dynamodb" {
-  name = "mulesoft-marketplace-dynamodb-${var.environment}"
+  name = "ipaas-marketplace-dynamodb-${var.environment}"
   policy = jsonencode({
     Version = "2012-10-17"
     Statement = [{
@@ -67,10 +67,11 @@ resource "aws_iam_role_policy_attachment" "lambda_db_attach" {
 resource "aws_lambda_function" "api_handler" {
   filename         = data.archive_file.lambda_zip.output_path
   source_code_hash = data.archive_file.lambda_zip.output_base64sha256
-  function_name    = "mulesoft-marketplace-api-${var.environment}"
+  function_name    = "ipaas-marketplace-api-${var.environment}"
   role             = aws_iam_role.lambda_exec.arn
   handler          = "app.main.handler" # Routes requests inside Python to Mangum/FastAPI
   runtime          = "python3.12"
+  memory_size      = 512
   timeout          = 15
 
   environment {
@@ -83,7 +84,7 @@ resource "aws_lambda_function" "api_handler" {
 
 # 4. Routing Layer: Amazon API Gateway (HTTP API v2 for optimal speed/cost)
 resource "aws_apigatewayv2_api" "http_api" {
-  name          = "mulesoft-marketplace-gateway-${var.environment}"
+  name          = "ipaas-marketplace-gateway-${var.environment}"
   protocol_type = "HTTP"
   
   cors_configuration {

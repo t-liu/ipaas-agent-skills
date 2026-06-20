@@ -17,5 +17,7 @@ const socialLinks: SocialLink[] = [
 export const config = {
   cloudinaryBaseUrl: import.meta.env.VITE_CLOUDINARY_BASE_URL || 'https://res.cloudinary.com/decbhr3np/image/upload/f_auto,q_auto',
   personalWebsiteUrl: 'https://thomasliu.click',
+  apiEndpointUrl: 'https://absl7r6ya9.execute-api.us-east-1.amazonaws.com',
+  dynamoDbTableName: 'mulesoft-agent-skills-dev',
   socialLinks
 } as const

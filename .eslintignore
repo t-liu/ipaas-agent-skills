@@ -1,0 +1,10 @@
+# Exclude production build artifacts
+dist/
+
+# Exclude dependencies and virtual environments
+node_modules/
+.venv/
+
+# Exclude non-javascript infrastructure directories
+infra/
+backend/
