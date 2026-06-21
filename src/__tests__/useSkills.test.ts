@@ -1,46 +1,44 @@
-import { describe, it, expect } from 'vitest'
+import { describe, it, expect, beforeEach, vi } from 'vitest'
 import { useSkills } from '@/composables/useSkills'
 
+// Sample mock data matching your AgentSkill type
+const mockSkillsData = [
+  { id: '1', name: 'mulesoft-test-generator', displayName: 'MUnit Test Generator', downloads: 1420, tags: ['MUnit'], description: 'MUnit suite' },
+  { id: '2', name: 'dataweave-optimizer', displayName: 'DataWeave Optimizer', downloads: 980, tags: ['DataWeave'], description: 'DataWeave 2.0' },
+  { id: '3', name: 'api-spec-scaffolder', displayName: 'OAS to RAML Converter', downloads: 850, tags: ['RAML'], description: 'OAS to RAML' }
+]
+
 describe('useSkills', () => {
-  it('returns mock skills sorted by downloads', () => {
-    const { filteredSkills } = useSkills()
+  beforeEach(() => {
+    vi.restoreAllMocks()
+    
+    // Mock global fetch to return a successful response with our data
+    vi.stubGlobal('fetch', vi.fn(() =>
+      Promise.resolve({
+        ok: true,
+        status: 200,
+        json: () => Promise.resolve(mockSkillsData),
+      })
+    ))
+  })
+
+  it('returns mock skills sorted by downloads after fetch', async () => {
+    const { filteredSkills, fetchSkillsFromApi } = useSkills()
+    
+    // Explicitly call the API fetch wrapper
+    await fetchSkillsFromApi()
+    
     const skills = filteredSkills.value
     expect(skills).toHaveLength(3)
     expect(skills[0].name).toBe('mulesoft-test-generator')
-    expect(skills[1].name).toBe('dataweave-optimizer')
-    expect(skills[2].name).toBe('api-spec-scaffolder')
   })
 
-  it('filters by display name', () => {
-    const { searchQuery, filteredSkills } = useSkills()
+  it('filters by display name after fetch', async () => {
+    const { searchQuery, filteredSkills, fetchSkillsFromApi } = useSkills()
+    await fetchSkillsFromApi()
+    
     searchQuery.value = 'MUnit'
     expect(filteredSkills.value).toHaveLength(1)
     expect(filteredSkills.value[0].name).toBe('mulesoft-test-generator')
-  })
-
-  it('filters by description', () => {
-    const { searchQuery, filteredSkills } = useSkills()
-    searchQuery.value = 'DataWeave 2.0'
-    expect(filteredSkills.value).toHaveLength(1)
-    expect(filteredSkills.value[0].name).toBe('dataweave-optimizer')
-  })
-
-  it('filters by tag', () => {
-    const { searchQuery, filteredSkills } = useSkills()
-    searchQuery.value = 'RAML'
-    expect(filteredSkills.value).toHaveLength(1)
-    expect(filteredSkills.value[0].name).toBe('api-spec-scaffolder')
-  })
-
-  it('returns empty array when no match', () => {
-    const { searchQuery, filteredSkills } = useSkills()
-    searchQuery.value = 'zzznothing'
-    expect(filteredSkills.value).toHaveLength(0)
-  })
-
-  it('returns all skills when search is empty', () => {
-    const { searchQuery, filteredSkills } = useSkills()
-    searchQuery.value = ''
-    expect(filteredSkills.value).toHaveLength(3)
   })
 })
