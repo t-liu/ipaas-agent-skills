@@ -71,13 +71,14 @@ resource "aws_lambda_function" "api_handler" {
   role             = aws_iam_role.lambda_exec.arn
   handler          = "app.main.handler" # Routes requests inside Python to Mangum/FastAPI
   runtime          = "python3.12"
-  memory_size      = 512
-  timeout          = 15
+  memory_size      = 256
+  timeout          = 10
 
   environment {
     variables = {
       DYNAMODB_TABLE_NAME = aws_dynamodb_table.agent_skills.name
       ENVIRONMENT         = var.environment
+      FRONTEND_URL        = "https://${local.fqdn}"
     }
   }
 }
@@ -86,12 +87,6 @@ resource "aws_lambda_function" "api_handler" {
 resource "aws_apigatewayv2_api" "http_api" {
   name          = "ipaas-marketplace-gateway-${var.environment}"
   protocol_type = "HTTP"
-  
-  cors_configuration {
-    allow_origins = ["*"] # Adjust to your verified production domain later
-    allow_methods = ["GET", "POST", "OPTIONS"]
-    allow_headers = ["Content-Type", "Authorization"]
-  }
 }
 
 resource "aws_apigatewayv2_integration" "lambda_integration" {
@@ -112,6 +107,17 @@ resource "aws_apigatewayv2_stage" "default" {
   api_id      = aws_apigatewayv2_api.http_api.id
   name        = "$default"
   auto_deploy = true
+
+  default_route_settings {
+    throttling_burst_limit = 50
+    throttling_rate_limit  = 100
+  }
+}
+
+resource "aws_apigatewayv2_route" "options_preflight" {
+  api_id    = aws_apigatewayv2_api.http_api.id
+  route_key = "OPTIONS /{proxy+}"
+  target    = "integrations/${aws_apigatewayv2_integration.lambda_integration.id}"
 }
 
 resource "aws_lambda_permission" "api_gw_permission" {
