@@ -1,4 +1,4 @@
-# AI Agent Skills Marketplace
+# iPaaS Agent Skills Marketplace
 
 This project serves as a marketplace for AI agent skills designed for various enterprise integration platforms (e.g., MuleSoft, Workato, Boomi, etc.).
 

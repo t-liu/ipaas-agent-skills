@@ -11,7 +11,7 @@ defineEmits<{
 <template>
   <div class="text-center max-w-3xl mx-auto mb-16">
     <h1 class="text-4xl font-extrabold text-brand-slate tracking-tight sm:text-5xl mb-4 dark:text-slate-100">
-      Agent Skills Marketplace for Enterprise Integration Platforms
+      Agent Skills for Enterprise Integration Platforms
     </h1>
     <p class="text-lg text-brand-muted leading-relaxed dark:text-slate-400">
       Discover, run, and extend certified engineering capabilities built for next-generation autonomous AI integration workflows.
