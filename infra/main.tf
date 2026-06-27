@@ -1,12 +1,23 @@
 # 1. Persistence Layer: DynamoDB Table
 resource "aws_dynamodb_table" "agent_skills" {
   name         = "ipaas-agent-skills-${var.environment}"
-  billing_mode = "PAY_PER_REQUEST" # Zero idle-cost model
+  billing_mode = "PAY_PER_REQUEST"
   hash_key     = "id"
 
   attribute {
     name = "id"
     type = "S"
+  }
+
+  attribute {
+    name = "category"
+    type = "S"
+  }
+
+  global_secondary_index {
+    name            = "CategoryIndex"
+    hash_key        = "category"
+    projection_type = "ALL"
   }
 
   tags = {

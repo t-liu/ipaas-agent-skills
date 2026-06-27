@@ -1,13 +1,28 @@
 <script setup lang="ts">
+import { ref, computed, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
-import { useSkills } from '@/composables/useSkills'
+import { useSkillsStore } from '@/stores/skills'
 import TagPill from '@/atoms/TagPill.vue'
 import CopyButton from '@/atoms/CopyButton.vue'
 
 const route = useRoute()
-const { filteredSkills } = useSkills()
+const store = useSkillsStore()
+const loading = ref(true)
 
-const skill = filteredSkills.value.find(s => s.name === route.params.name)
+const skill = computed(() => store.skills.find(s => s.name === route.params.name))
+
+onMounted(async () => {
+  loading.value = true
+  if (store.skills.length === 0) {
+    await store.fetchSkillsFromApi(200, false)
+  } else {
+    const found = store.skills.find(s => s.name === route.params.name)
+    if (!found) {
+      await store.fetchSkillByName(route.params.name as string)
+    }
+  }
+  loading.value = false
+})
 </script>
 
 <template>
@@ -35,7 +50,22 @@ const skill = filteredSkills.value.find(s => s.name === route.params.name)
     </router-link>
 
     <div
-      v-if="skill"
+      v-if="loading"
+      class="bg-brand-card rounded-xl border border-gray-100 shadow-tactile p-8 dark:bg-slate-800 dark:border-slate-700 animate-pulse"
+    >
+      <div class="h-6 bg-gray-200 rounded w-2/3 mb-2 dark:bg-slate-700" />
+      <div class="h-4 bg-gray-200 rounded w-1/4 mb-6 dark:bg-slate-700" />
+      <div class="h-4 bg-gray-200 rounded w-full mb-2 dark:bg-slate-700" />
+      <div class="h-4 bg-gray-200 rounded w-5/6 mb-6 dark:bg-slate-700" />
+      <div class="flex gap-2 mb-6">
+        <div class="h-6 bg-gray-200 rounded-full w-16 dark:bg-slate-700" />
+        <div class="h-6 bg-gray-200 rounded-full w-20 dark:bg-slate-700" />
+      </div>
+      <div class="h-10 bg-gray-200 rounded-lg w-48 dark:bg-slate-700" />
+    </div>
+
+    <div
+      v-else-if="skill"
       class="bg-brand-card rounded-xl border border-gray-100 shadow-tactile p-8 dark:bg-slate-800 dark:border-slate-700"
     >
       <div class="flex items-start justify-between mb-6">
