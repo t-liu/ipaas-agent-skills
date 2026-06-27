@@ -6,6 +6,11 @@ defineProps<{
   skills: AgentSkill[]
   isLoading: boolean
   error: string | null
+  hasMore: boolean
+}>()
+
+const emit = defineEmits<{
+  loadMore: []
 }>()
 </script>
 
@@ -21,7 +26,7 @@ defineProps<{
     </div>
 
     <div
-      v-if="isLoading"
+      v-if="isLoading && skills.length === 0"
       class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
       role="status"
       aria-label="Loading skills"
@@ -44,7 +49,7 @@ defineProps<{
     </div>
 
     <div
-      v-else-if="error"
+      v-else-if="error && skills.length === 0"
       class="text-center py-16 bg-brand-card rounded-2xl border border-red-200 dark:bg-slate-800 dark:border-red-800"
       role="alert"
     >
@@ -71,6 +76,44 @@ defineProps<{
       <p class="text-sm text-brand-muted font-medium dark:text-slate-400">
         No marketplace skills match your current search query.
       </p>
+    </div>
+
+    <div
+      v-if="hasMore || (isLoading && skills.length > 0)"
+      class="flex justify-center mt-8"
+    >
+      <button
+        v-if="!isLoading"
+        class="px-6 py-2.5 text-sm font-medium text-brand-accent bg-indigo-50 hover:bg-indigo-100 rounded-lg transition-colors dark:bg-indigo-900/30 dark:hover:bg-indigo-900/50 dark:text-indigo-300"
+        @click="emit('loadMore')"
+      >
+        Load more ({{ skills.length }} loaded)
+      </button>
+      <div
+        v-else
+        class="flex items-center gap-2 text-sm text-brand-muted dark:text-slate-400"
+      >
+        <svg
+          class="animate-spin h-4 w-4"
+          viewBox="0 0 24 24"
+          fill="none"
+        >
+          <circle
+            class="opacity-25"
+            cx="12"
+            cy="12"
+            r="10"
+            stroke="currentColor"
+            stroke-width="4"
+          />
+          <path
+            class="opacity-75"
+            fill="currentColor"
+            d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
+          />
+        </svg>
+        Loading more...
+      </div>
     </div>
   </div>
 </template>

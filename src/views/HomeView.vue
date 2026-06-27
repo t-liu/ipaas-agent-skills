@@ -1,14 +1,20 @@
 <script setup lang="ts">
 import { onMounted } from 'vue'
-import { useSkills } from '@/composables/useSkills'
+import { storeToRefs } from 'pinia'
+import { useSkillsStore } from '@/stores/skills'
 import SearchHeader from '@/organisms/SearchHeader.vue'
 import SkillGrid from '@/organisms/SkillGrid.vue'
 
-const { searchQuery, filteredSkills, isLoading, error, fetchSkillsFromApi } = useSkills()
+const store = useSkillsStore()
+const { searchQuery, filteredSkills, isLoading, error, hasMore } = storeToRefs(store)
 
 onMounted(() => {
-  fetchSkillsFromApi()
+  store.fetchSkillsFromApi(50, false)
 })
+
+function loadMore() {
+  store.fetchSkillsFromApi(50, true)
+}
 </script>
 
 <template>
@@ -18,6 +24,8 @@ onMounted(() => {
       :skills="filteredSkills"
       :is-loading="isLoading"
       :error="error"
+      :has-more="hasMore"
+      @load-more="loadMore"
     />
   </main>
 </template>

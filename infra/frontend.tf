@@ -54,16 +54,17 @@ resource "aws_cloudfront_distribution" "frontend_cdn" {
     viewer_protocol_policy = "redirect-to-https"
     compress               = true
 
-    # Crucial: Pass-through mode (Turn off caching for data endpoints)
-    min_ttl     = 0
-    default_ttl = 0
-    max_ttl     = 0
+    # Cache catalog responses: skills data changes infrequently, so 60s TTL
+    # eliminates the vast majority of Lambda invocations and cold starts.
+    min_ttl     = 60
+    default_ttl = 60
+    max_ttl     = 300
 
     forwarded_values {
       query_string = true
-      headers      = ["Authorization", "Content-Type"] # Allow headers through to your API
+      headers      = ["Authorization", "Content-Type"]
       cookies {
-        forward = "all"
+        forward = "none"
       }
     }
   }
